@@ -10,6 +10,8 @@ const reducerData = (state, action) => {
             return { status: 'finish', data: action.data, error: null }
         case 'error':
             return { status: 'error', data: null, error: action.error }
+        default:
+            return state
     }
 
 }
@@ -23,7 +25,7 @@ const useData = (initialData, propStorage) => {
 
     useEffect(() => {
         window.localStorage.setItem(propStorage, JSON.stringify(state));
-    }, [state])
+    }, [state, propStorage])
 
     const run = useCallback((promisse) => {
         if(!promisse){
@@ -37,7 +39,7 @@ const useData = (initialData, propStorage) => {
         }).catch(error => {
             dispach({ type: 'error', error })
         })
-    })
+    }, [initialData.data])
 
     return [state, run]
 }

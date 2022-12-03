@@ -20,7 +20,7 @@ function App() {
 
     return _get(valueStorage, 'data.ip', '');
   });
-  const [{ status, data, error }, run] = useData({
+  const [{ status, data }, run] = useData({
     status: 'idle',
     data: {
       ip: '',
@@ -38,7 +38,7 @@ function App() {
       const promisse = IpGeoLocation.getIpLocation();
       run(promisse);
     }
-  }, []);
+  }, [run]);
 
   const item = {
     ..._get(data, 'location', {}),
@@ -67,8 +67,8 @@ function App() {
   return (
     <Layout>
       <Header>
-        <div className="flex items-center mt-6">
-          <Input value={value} onChange={onChange} />
+        <div className="lg:w-2/5 flex items-center mt-6">
+          <Input placeholder="Search for any IP address or domain" value={value} onChange={onChange} />
           <Button type="button" onClick={onClick} />
         </div>
       </Header>
