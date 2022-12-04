@@ -68,7 +68,7 @@ function App() {
     <Layout>
       <Header>
         <div className="lg:w-2/5 flex items-center mt-6">
-          <Input placeholder="Search for any IP address or domain" value={value} onChange={onChange} />
+          <Input name="ip-search" placeholder="Search for any IP address or domain" value={value} onChange={onChange} />
           <Button type="button" onClick={onClick} />
         </div>
       </Header>
