@@ -1,7 +1,7 @@
 import _size from 'lodash/size';
 
-const Card = ({ item }) => {
-    const items = normalizedItems(item);
+const Card = ({ item, hasError }) => {
+    const items = hasError ? itemError : normalizedItems(item);
     
     return (
         <div className="absolute w-full lg:top-[-60px] top-[-120px] z-[99999]">
@@ -24,6 +24,13 @@ const Card = ({ item }) => {
         </div>
     )
 }
+
+const itemError = [
+    {
+        title: 'Ops!',
+        content: 'Houve algum problema, tente novamente mais tarde !'
+    }
+]
 
 const normalizedItems = item => {
     const location = item.city ? `${item.city},${item.country} ${item.geonameId}` : 'DEFAULT'

@@ -15,11 +15,7 @@ import IpGeoLocation from './services/ipGeolocation';
 const IP_LENGTH = 15
 
 function App() {
-  const [value, setValue] = useState(() => {
-    const valueStorage = JSON.parse(window.localStorage.getItem('dataStorage'))
-
-    return _get(valueStorage, 'data.ip', '');
-  });
+  const [value, setValue] = useState('');
   const [{ status, data }, run] = useData({
     status: 'idle',
     data: {
@@ -30,15 +26,16 @@ function App() {
         lng: ''
       }
     }
-  }, 'dataStorage');
+  });
 
   useEffect(() => {
-    const valueStorage = JSON.parse(window.localStorage.getItem('dataStorage'))
-    if(valueStorage && valueStorage.data.ip === ''){
-      const promisse = IpGeoLocation.getIpLocation();
-      run(promisse);
-    }
-  }, [run]);
+    if(status !== 'idle') return;
+
+    const promisse = IpGeoLocation.getIpLocation();
+    console.log('render')
+
+    run(promisse);
+  }, [run, status]);
 
   const item = {
     ..._get(data, 'location', {}),
@@ -64,6 +61,8 @@ function App() {
     run(promisse)
   }
 
+  const hasError = status === 'error'
+
   return (
     <Layout>
       <Header>
@@ -74,7 +73,7 @@ function App() {
       </Header>
       <div className="relative">
         {status === 'pending' && <p>loading...</p>}
-        {status === 'finish' && <Card item={{...item}} />} 
+        {(status === 'finish' || hasError) && <Card item={{...item}} hasError={hasError} />} 
         <Map position={position}/>
       </div>
     </Layout>
